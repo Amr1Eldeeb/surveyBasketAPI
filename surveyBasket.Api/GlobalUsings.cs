@@ -1,0 +1,25 @@
+﻿global using Microsoft.AspNetCore.Http;
+global using Microsoft.AspNetCore.Mvc;
+global using  surveyBasket.Api.Entites;
+global using surveyBasket.Api.Services;
+global using Mapster;
+global using surveyBasket.Api.Contracts.Polls;
+global using System.ComponentModel.DataAnnotations;
+global using FluentValidation;
+global using MapsterMapper;
+global using System.Reflection;
+global using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
+global using surveyBasket.Api;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.Configuration;
+global  using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using Microsoft.Extensions.DependencyInjection;
+global using surveyBasket.Api.Date;
+global using surveyBasket.Api.Contracts.Authencation;
+global using Microsoft.AspNetCore.Identity;
+global using surveyBasket.Api.Authenciation;
+global using System.Security.Cryptography;
+global using Microsoft.Extensions.Options;
+global using surveyBasket.Api.Abstractions;
+global using surveyBasket.Api.Errors;
+
