@@ -2,6 +2,7 @@
 
 
 
+
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
@@ -29,5 +30,7 @@ app.UseCors(); // middelware
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseExceptionHandler();  
+//app.UseMiddleware<Execptionshandling>();
 
 app.Run();

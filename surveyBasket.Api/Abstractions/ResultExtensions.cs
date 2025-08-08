@@ -1,35 +1,44 @@
-﻿namespace surveyBasket.Api.Abstractions
+﻿using Microsoft.AspNetCore.Components.Forms;
+
+namespace surveyBasket.Api.Abstractions
 {
     public static  class ResultExtensions
     {
-        public static ObjectResult Toproplem(this Result result,int statusCode ,string title)
+        public static ObjectResult ToProblem(this Result result,int statusCode )
         {
 
             if(result.IsSuccess)
             {
                 throw new InvalidOperationException
-                    ("CanNot Convert success result to a problem");
+                    ("Cannot Convert success result to a problem");
             }
-            //var problem = Results.Problem(statusCode: statusCode);
-            //var proplemdetaliss  = problem.GetType().GetProperty(ProblemDetails).GetValue(problem) as ProblemDetails; 
 
 
+            var problem = Results.Problem(statusCode: statusCode);
+            var problemdetalis = problem.GetType().GetProperty(nameof(ProblemDetails))!.GetValue(problem)  as ProblemDetails;
 
-
-
-            var problemDetalis = new ProblemDetails
-           
+            problemdetalis!.Extensions = new Dictionary<string, object?>
             {
-                Status = statusCode,
-                Title = title,
-                Extensions = new Dictionary<string, object?>
                 {
-                    {
-                        "errors" , new object[]{result.Error}
-                    }
+                     "errors" , new object[]{result.Error}
                 }
             };
-            return new ObjectResult(problemDetalis);
+
+
+            // var problemDetalis = new ProblemDetails
+           
+            //{
+            //    Type = "",
+            //    Status = statusCode,
+            //    Title = title,
+            //    Extensions = new Dictionary<string, object?>
+            //    {
+            //        {
+            //            "errors" , new object[]{result.Error}
+            //        }
+            //    }
+            //};
+            return new ObjectResult(problemdetalis);
 
         }
     }

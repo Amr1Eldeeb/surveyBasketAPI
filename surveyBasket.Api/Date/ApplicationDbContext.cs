@@ -15,7 +15,8 @@ namespace surveyBasket.Api.Date
         private readonly IHttpContextAccessor HttpContextAccessor = httpContextAccessor;
 
         public DbSet<Poll> Polls { get; set; }
-
+        public DbSet<Question> Questions { get; set; }   
+        public DbSet<Answer> Answers {  get; set; } 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             /*modelBuilder.Entity<Poll>().Property(x => x.Title).
@@ -37,11 +38,24 @@ namespace surveyBasket.Api.Date
                 SecurityStamp = Guid.NewGuid().ToString("D"),
                 ConcurrencyStamp = Guid.NewGuid().ToString("D"),
             };
-
-
             user.PasswordHash = hasher.HashPassword(user, "Admin@123");
 
             modelBuilder.Entity<ApplicationUser>().HasData(user);
+            var cascadeFKs = modelBuilder.Model
+                .GetEntityTypes()
+                .SelectMany(t => t.GetForeignKeys())
+                .Where(fk=>fk.DeleteBehavior == DeleteBehavior.Cascade
+                &&!fk.IsOwnership);
+
+
+            foreach (var fk in cascadeFKs)
+            {
+                fk.DeleteBehavior = DeleteBehavior.Restrict;
+
+            }
+
+
+
 
 
             base.OnModelCreating(modelBuilder);

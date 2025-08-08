@@ -56,8 +56,8 @@ namespace surveyBasket.Api
                 (options => options.UseSqlServer(connencationString));
             //
             services.AddScoped<IAuthService, AuthService>();//For Di injection 
-
-
+            services.AddExceptionHandler<GlobalExceptionHandler>();
+            services.AddProblemDetails();
             return services;   
         }
         public static IServiceCollection AddSwagger(this IServiceCollection services)
@@ -88,7 +88,7 @@ namespace surveyBasket.Api
 
 
             services.AddScoped<IPollServices, PollServices>();//For Di injection 
-
+            services.AddScoped<IQuestionService, QuestionService>();
             //servicesAddScoped<IValidator<CreatePollRequest>,CreatePollRequestValidator>(); 
             //servicesAddValidatorsFromAssemblyContaining<Program>();
 

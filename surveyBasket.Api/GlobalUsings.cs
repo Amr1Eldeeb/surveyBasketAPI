@@ -11,7 +11,6 @@ global using System.Reflection;
 global using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 global using surveyBasket.Api;
 global using Microsoft.EntityFrameworkCore;
-global using Microsoft.Extensions.Configuration;
 global  using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using Microsoft.Extensions.DependencyInjection;
 global using surveyBasket.Api.Date;
@@ -22,4 +21,6 @@ global using System.Security.Cryptography;
 global using Microsoft.Extensions.Options;
 global using surveyBasket.Api.Abstractions;
 global using surveyBasket.Api.Errors;
+global using Microsoft.AspNetCore.Authorization;
+
 

@@ -15,16 +15,15 @@ namespace surveyBasket.Api.Controllers
         [HttpPost("")]
         public async Task<IActionResult>Login([FromBody]Login loginRequest, CancellationToken cancellationToken = default)
         {
-
-
-            var AuthResult = await _authService.getTokenasync(loginRequest.Email,
+            //throw new Exception("non e");
+            var authResult = await _authService.getTokenasync(loginRequest.Email,
                 loginRequest.Password , cancellationToken);
 
-            return AuthResult.IsSuccess
-                ? Ok(AuthResult.value) :
-                AuthResult.Toproplem(StatusCodes.Status400BadRequest ,"Bad Request !!" );
+            return authResult.IsSuccess
+                ? Ok(authResult.value) :
+                authResult.ToProblem(StatusCodes.Status400BadRequest  );
               
-
+            // standered RFC without propblem
 
         }
         [HttpPost("refresh")]
@@ -35,6 +34,7 @@ namespace surveyBasket.Api.Controllers
             var AuthResult = await _authService.getRefreshToken(request.token, request.refreshToken, cancellationToken);
 
             return AuthResult is null ? BadRequest("Invalid Token") : Ok(AuthResult);
+
         }
 
 

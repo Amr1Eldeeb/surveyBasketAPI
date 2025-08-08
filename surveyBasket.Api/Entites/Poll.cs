@@ -10,8 +10,8 @@ namespace surveyBasket.Api.Entites
         public bool IsPublished {  get; set; }
         public DateOnly StartAt { get; set; }
         public DateOnly EndAt { get; set; }
-    
 
+        public ICollection<Question> questions { get; set; } = [];
     }
 }
 

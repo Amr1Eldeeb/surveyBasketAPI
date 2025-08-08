@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using surveyBasket.Api.Contracts.Polls;
-using System.Reflection.Metadata.Ecma335;
-
+﻿
 namespace surveyBasket.Api.Controllers
 {
     [Route("api/[controller]")] // template 
@@ -22,7 +17,7 @@ namespace surveyBasket.Api.Controllers
         {
             var result = await _pollServices.GetAll(cancellationToken);
             
-            return  result.IsSuccess ? Ok(result.value) : BadRequest(PollsErrors.PollNotFound);
+            return  result.IsSuccess ? Ok(result.value) :result.ToProblem(StatusCodes.Status400BadRequest);
         
         }
 
@@ -35,8 +30,6 @@ namespace surveyBasket.Api.Controllers
 
 
           Problem(statusCode: StatusCodes.Status404NotFound, title: result.Error.Code, detail: result.Error.ErrorDescription);
-                
-                ;
 
 
              
@@ -49,10 +42,10 @@ namespace surveyBasket.Api.Controllers
         {
 
             var NewPoll = await _pollServices.Add(request, cancellationToken);
-           var result =  NewPoll.value;
-            var poll = _pollServices.GetAll();
+         
             
-            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+            return NewPoll.IsSuccess ?CreatedAtAction(nameof(GetById), new { id = NewPoll.value.Id }, NewPoll.value)   
+                :NewPoll.ToProblem(StatusCodes.Status409Conflict);
         }
 
 
@@ -62,7 +55,8 @@ namespace surveyBasket.Api.Controllers
             CancellationToken cancellationToken)
         {
             var result = await _pollServices.Update(id, request, cancellationToken);
-            return result.IsSuccess ? NoContent() : NotFound(result.Error);
+            return result.IsSuccess ? NoContent()
+                : result.ToProblem(StatusCodes.Status409Conflict);
 
         }
         [HttpDelete("{id}")]
@@ -74,7 +68,7 @@ namespace surveyBasket.Api.Controllers
             {
                 return NotFound();
             }
-            return NoContent();
+            return IsDeleted.ToProblem(StatusCodes.Status400BadRequest);
 
         }
         [HttpPut("{id}/togglePublished")]
@@ -84,7 +78,7 @@ namespace surveyBasket.Api.Controllers
             var flag = await _pollServices.TogglePublishedStatues(id, cancellationToken);
             if (flag.IsFailure)
             {
-                return NotFound();
+                return flag.ToProblem(StatusCodes.Status400BadRequest);
             }
             return NoContent();
         }

@@ -33,6 +33,11 @@ namespace surveyBasket.Api.Services
 
         public async Task<Result<PollResponse>> Add(PollRequest poll, CancellationToken cancellationToken = default)
         {
+            var isExistingTitle = await _context.Polls.AnyAsync(x => x.Title == poll.Title ,cancellationToken:cancellationToken);
+            if(isExistingTitle)
+            {
+                return Result.Failure<PollResponse>(PollsErrors.DuplcatedPollTitled);
+            }
            var result =poll.Adapt<Poll>();
             var pollresponse = result.Adapt<PollResponse>();
             await _context.Polls.AddAsync(result, cancellationToken);
@@ -48,8 +53,17 @@ namespace surveyBasket.Api.Services
 
         {
             var currentpoll = await _context.Polls.FindAsync(id, cancellationToken);
-            //var currenPoll = await _context.Polls.SingleOrDefaultAsync(x=>x.Id == id);
+
+            var isExistingTitle = await _context.Polls.AnyAsync(x => x.Title == poll.Title &&x.Id!=id, cancellationToken: cancellationToken);
+            if (isExistingTitle)
+            {
+                return Result.Failure<PollResponse>(PollsErrors.DuplcatedPollTitled);
+            }
+
+
+
             if (currentpoll is null) 
+
                 return Result.Failure(PollsErrors.PollNotFound);
 
             currentpoll.Title = poll.Title;
