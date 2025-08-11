@@ -83,5 +83,45 @@ namespace surveyBasket.Api.Services
 
             return Result.Success();
         }
+
+        public async Task<Result> UpdateAsync(int pollId, int id, QuestionRequest request, CancellationToken cancellationToken = default)
+        {
+
+            //accept content if id === id  mean content not changed and not accept if content ==contentr and not same id
+            var questionIsExists = await _context.Questions.
+            AnyAsync(x => x.pollId == pollId
+            && x.Id != id
+            && x.Content == request.Content,
+            cancellationToken
+            );
+
+            if (questionIsExists)
+                return Result.Failure(QuestionErrors.DuplicatedQuestionContent);
+
+            var question = await _context.Questions.
+                Include(x => x.Answers).SingleOrDefaultAsync(x => x.Id == id && x.pollId == pollId, cancellationToken);
+
+            if (question is null)
+                return Result.Failure(QuestionErrors.DuplicatedQuestionContent);
+
+            question.Content = request.Content;
+            //current answers 
+            var currentAnswers = question.Answers.Select(x => x.Content ).ToList();
+
+            //add new answers in db
+            var newAnswers = request.Answers.Except(currentAnswers).ToList();
+
+            foreach (var item in newAnswers)
+            {
+                question.Answers.Add(new Answer { Content = item });
+            }// == of newAnswers.foreach(answer=>question.Answers(add(new Asnwer{content =answer})
+
+            question.Answers.ToList().ForEach(answer => 
+            {
+            answer.IsActive = request.Answers.Contains(answer.Content);
+             });
+            await _context.SaveChangesAsync(cancellationToken);
+            return Result.Success();    
+        }
     }
 }

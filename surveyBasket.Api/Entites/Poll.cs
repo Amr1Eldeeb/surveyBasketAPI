@@ -12,6 +12,7 @@ namespace surveyBasket.Api.Entites
         public DateOnly EndAt { get; set; }
 
         public ICollection<Question> questions { get; set; } = [];
+        public ICollection<Vote> Votes { get; set; } = [];
     }
 }
 

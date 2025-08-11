@@ -51,5 +51,18 @@ namespace surveyBasket.Api.Controllers
             return result.IsSuccess ? NoContent() : result.ToProblem(StatusCodes.Status404NotFound);
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Updated([FromRoute] int pollId, [FromRoute]int id, [FromBody] QuestionRequest request, CancellationToken cancellation)
+        {
+        var result = await _questionService.UpdateAsync(pollId , id, request, cancellation);  
+           if(result.IsSuccess)
+                return NoContent();
+
+           return result.Error.Equals(QuestionErrors.DuplicatedQuestionContent) ?
+                result.ToProblem(StatusCodes.Status409Conflict) :
+                result.ToProblem(StatusCodes.Status404NotFound);
+
+        }
+
     }
 }
