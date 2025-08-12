@@ -43,11 +43,12 @@ namespace surveyBasket.Api.Date
             user.PasswordHash = hasher.HashPassword(user, "Admin@123");
 
             modelBuilder.Entity<ApplicationUser>().HasData(user);
+            /**/
             var cascadeFKs = modelBuilder.Model
                 .GetEntityTypes()
                 .SelectMany(t => t.GetForeignKeys())
-                .Where(fk=>fk.DeleteBehavior == DeleteBehavior.Cascade
-                &&!fk.IsOwnership);
+                .Where(fk => fk.DeleteBehavior == DeleteBehavior.Cascade
+                && !fk.IsOwnership);
 
 
             foreach (var fk in cascadeFKs)
@@ -55,7 +56,6 @@ namespace surveyBasket.Api.Date
                 fk.DeleteBehavior = DeleteBehavior.Restrict;
 
             }
-
 
 
 

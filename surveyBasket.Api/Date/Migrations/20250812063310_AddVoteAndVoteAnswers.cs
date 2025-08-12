@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace surveyBasket.Api.Date.Migrations
 {
     /// <inheritdoc />
-    public partial class AddVoteAnswersAndVoteInDb : Migration
+    public partial class AddVoteAndVoteAnswers : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -76,11 +76,6 @@ namespace surveyBasket.Api.Date.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.InsertData(
-                table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "Firstname", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "9ae5ddb1-53ca-4974-bb4f-3a2eb0d6ddb2", 0, "c7b76600-e6f6-484f-b76e-e2228694bb99", "admin@example.com", true, "Amr", "khaled", false, null, "ADMIN@EXAMPLE.COM", "ADMIN", "AQAAAAIAAYagAAAAEEZOw14krXFnl6VC/ij5jGIA3Ii818QXe8wwHy6SmGH7dR/zF9leJPLYuD/DdAiHZg==", null, false, "66936020-9592-45fa-a71f-a1c692e03369", false, "admin" });
-
             migrationBuilder.CreateIndex(
                 name: "IX_VoteAnswers_AnswerID",
                 table: "VoteAnswers",
@@ -122,11 +117,6 @@ namespace surveyBasket.Api.Date.Migrations
 
             migrationBuilder.DropTable(
                 name: "Votes");
-
-            migrationBuilder.DeleteData(
-                table: "AspNetUsers",
-                keyColumn: "Id",
-                keyValue: "9ae5ddb1-53ca-4974-bb4f-3a2eb0d6ddb2");
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",

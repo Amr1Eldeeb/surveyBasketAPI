@@ -12,8 +12,8 @@ using surveyBasket.Api.Date;
 namespace surveyBasket.Api.Date.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250811231650_AddVoteAnswersAndVoteInDb")]
-    partial class AddVoteAnswersAndVoteInDb
+    [Migration("20250812063445_adduserToData")]
+    partial class adduserToData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -262,9 +262,9 @@ namespace surveyBasket.Api.Date.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9ae5ddb1-53ca-4974-bb4f-3a2eb0d6ddb2",
+                            Id = "2a39603a-b8c8-41d1-80b4-00c1b941e521",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c7b76600-e6f6-484f-b76e-e2228694bb99",
+                            ConcurrencyStamp = "b0b14b3c-3555-4532-aaee-ed1e39621ee1",
                             Email = "admin@example.com",
                             EmailConfirmed = true,
                             Firstname = "Amr",
@@ -272,9 +272,9 @@ namespace surveyBasket.Api.Date.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@EXAMPLE.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEZOw14krXFnl6VC/ij5jGIA3Ii818QXe8wwHy6SmGH7dR/zF9leJPLYuD/DdAiHZg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEORCijGVLDLhWhu5EkJ/8fuZ9F6UuCyEyOi98Km00GM4Iv6MAB5rPxvHmxeZKwWHlQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "66936020-9592-45fa-a71f-a1c692e03369",
+                            SecurityStamp = "edf00b60-308e-4dc0-b556-07bbd985c106",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
