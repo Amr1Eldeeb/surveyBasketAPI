@@ -22,5 +22,7 @@ global using Microsoft.Extensions.Options;
 global using surveyBasket.Api.Abstractions;
 global using surveyBasket.Api.Errors;
 global using Microsoft.AspNetCore.Authorization;
+global using surveyBasket.Api.Exteniosns;
+global using System.Security.Claims;
 
 

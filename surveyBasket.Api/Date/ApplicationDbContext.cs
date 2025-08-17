@@ -70,7 +70,7 @@ namespace surveyBasket.Api.Date
             //معاناها اي حد هيورث الكلاس دا هيطبق عليه التغيررات
             foreach (var entry in entries)
             {
-                var currentUserID  = HttpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier)!; //id
+                var currentUserID = HttpContextAccessor.HttpContext?.User.GetUserId();//id
                 if (entry.State == EntityState.Added)
                 {
                     entry.Property(x => x.CreatedById).CurrentValue = currentUserID!;

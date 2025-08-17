@@ -36,15 +36,16 @@ namespace surveyBasket.Api.Services
         }
         public async Task<Result<IEnumerable<QuestionResponse>>> GetAvaliableAsync(int pollId, string userID, CancellationToken cancellationToken = default)
         {
-            //if user have voted on this poll or not checking
+            //if user have voted on this b same poll or not checking
             var hasVote  = await _context.Votes.AnyAsync(x=>x.PollId == pollId &&x.UserId ==userID, cancellationToken);
 
 
            if(hasVote)
-            
                 return Result.Failure<IEnumerable<QuestionResponse>>(VoteErrors.DuplicatedVote);
+
+
            var pollIsExist = await _context.Polls.AnyAsync(x=>x.Id==pollId&&
-           x.IsPublished == true && x.StartAt <= DateOnly.FromDateTime(DateTime.UtcNow) && x.EndAt >= DateOnly.FromDateTime(DateTime.UtcNow), cancellationToken);
+              x.IsPublished == true && x.StartAt <= DateOnly.FromDateTime(DateTime.UtcNow) && x.EndAt >= DateOnly.FromDateTime(DateTime.UtcNow), cancellationToken);
 
             if(!pollIsExist)
                 return Result.Failure<IEnumerable<QuestionResponse>>(PollsErrors.PollNotFound);
