@@ -13,6 +13,7 @@ namespace surveyBasket.Api.Mapping
            // دي هي دي
             //config.NewConfig<QuestionRequest, Question>()
             //    .Map(dest => dest.Answers, src => src.Answers.Select(answer => new Answer { Content = answer }));
+
             //////config.NewConfig<Poll, PollResponse>()
             ////   .Map(dest => dest.Notes, src => src.Description);
             //config.NewConfig<Student, StudentResponse>()

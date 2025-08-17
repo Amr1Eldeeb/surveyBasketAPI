@@ -20,7 +20,14 @@ namespace surveyBasket.Api.Controllers
             return  result.IsSuccess ? Ok(result.value) :result.ToProblem(StatusCodes.Status400BadRequest);
         
         }
+        [HttpGet("current")]
+        public async Task<IActionResult> GetCurrent(CancellationToken cancellationToken = default)
+        {
+            var result = await _pollServices.GetCurrentAsync(cancellationToken);
 
+            return result.IsSuccess ? Ok(result.value) : result.ToProblem(StatusCodes.Status400BadRequest);
+            
+        }
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id, CancellationToken cancellationToken = default)
         {

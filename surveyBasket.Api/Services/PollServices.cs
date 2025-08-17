@@ -13,7 +13,7 @@ namespace surveyBasket.Api.Services
         public async Task<Result<IEnumerable<PollResponse>>> GetAll(CancellationToken cancellationToken = default)
         {
 
-            var polls  = await _context.Polls.ToListAsync(cancellationToken);
+            var polls  = await _context.Polls.AsNoTracking().ToListAsync(cancellationToken);
             var result = polls.Adapt<IEnumerable<PollResponse>>();
 
             return Result.Success(result);
@@ -103,6 +103,14 @@ namespace surveyBasket.Api.Services
             return Result.Success();
 
 
+
+        }
+      public async Task<Result<IEnumerable<PollResponse>>> GetCurrentAsync(CancellationToken cancellationToken = default)
+      {
+           var polls =  await  _context.Polls.Where(x=>x.IsPublished ==true && x.StartAt<= DateOnly.FromDateTime(DateTime.UtcNow) && x.EndAt >= DateOnly.FromDateTime(DateTime.UtcNow)).
+                AsNoTracking().ProjectToType<PollResponse>().ToListAsync(cancellationToken);
+
+            return Result.Success<IEnumerable<PollResponse>>(polls);
 
         }
 
