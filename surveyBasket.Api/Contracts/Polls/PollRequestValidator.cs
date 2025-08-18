@@ -19,7 +19,7 @@
             RuleFor(x => x.EndAt)
                 .NotEmpty();
             RuleFor(x => x)
-                .Must(HasvalidDate).WithName(nameof(PollRequest.EndAt)) // عشان نعين اسم لان المست علي الكلاس كله
+                .Must(HasvalidDate).WithName(nameof(PollRequest.EndAt)) 
                 // for handel propname Because must for all class and not defined what is the prop has contrioeld
                 .WithMessage("plz enter a valid date {PropertyName}");
 

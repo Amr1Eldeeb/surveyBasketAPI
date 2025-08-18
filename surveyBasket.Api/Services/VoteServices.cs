@@ -9,10 +9,10 @@ namespace surveyBasket.Api.Services
     {
         private readonly ApplicationDbContext _context = Context;
 
-        public async Task<Result> AddVoteAsync(int pollId, Vote vote, voteRequest request, CancellationToken cancellationToken = default)
+        public async Task<Result> AddVoteAsync(int pollId,string userId,voteRequest request, CancellationToken cancellationToken = default)
         {
             //if user have voted on this b same poll or not checking
-            var hasVote = await _context.Votes.AnyAsync(x => x.PollId == pollId && x.UserId == userID, cancellationToken);
+            var hasVote = await _context.Votes.AnyAsync(x => x.PollId == pollId && x.UserId == userId, cancellationToken);
 
 
             if (hasVote)
@@ -24,8 +24,23 @@ namespace surveyBasket.Api.Services
 
             if (!pollIsExist)
                 return Result.Failure<IEnumerable<QuestionResponse>>(PollsErrors.PollNotFound);
-             var avaliableQuestion  = await _context.Questions.AnyAsync(
+            var avaliableQuestion = await _context.Questions.Where(x => x.pollId == pollId && x.IsActive)
+                .Select(x=>x.Id )
+                .ToListAsync(cancellationToken);
+            if(!request.answer.Select(x=>x.questionId).SequenceEqual(avaliableQuestion))
+            {
+                return Result.Failure<IEnumerable<QuestionResponse>>(VoteErrors.InvalidQuestion);
 
+            }
+            var Vote = new Vote
+            {
+                PollId = pollId,
+                UserId = userId,
+                Answers = request.answer.Adapt<IEnumerable<VoteAnswer>>().ToList()
+            };
+            await _context.Votes.AddAsync(Vote,cancellationToken);    
+            await _context.SaveChangesAsync(cancellationToken);
+            return Result.Success();
         }
     }
 }

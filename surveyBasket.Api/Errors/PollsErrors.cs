@@ -3,9 +3,9 @@
     public  static class PollsErrors
     {
         public static readonly Error PollNotFound =
-            new Error("Poll.NotFound", "No was Found was found with id  <=> ");
+            new Error("Poll.NotFound", "No was Found was found with id  <=> ",StatusCodes.Status404NotFound);
         public static readonly Error DuplcatedPollTitled =
-            new Error("Poll Duplcated", "Anthor poll with the same is already Exsist");
+            new Error("Poll Duplcated", "Anthor poll with the same is already Exsist",StatusCodes.Status409Conflict);
 
     }
 }

@@ -21,7 +21,7 @@ namespace surveyBasket.Api.Controllers
 
             return authResult.IsSuccess
                 ? Ok(authResult.value) :
-                authResult.ToProblem(StatusCodes.Status400BadRequest  );
+                authResult.ToProblem();
               
             // standered RFC without propblem
 

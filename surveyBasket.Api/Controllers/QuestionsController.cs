@@ -20,14 +20,14 @@ namespace surveyBasket.Api.Controllers
         public async Task<IActionResult>Get([FromRoute] int pollId, [FromRoute]int Id, CancellationToken cancellation)
         {
             var result = await _questionService.GetAsync(pollId, Id, cancellation);
-            return result.IsSuccess ? Ok(result.value) : result.ToProblem(StatusCodes.Status404NotFound);
+            return result.IsSuccess ? Ok(result.value) : result.ToProblem();
         }
 
         [HttpGet("")]
          public async Task<IActionResult> GetAll([FromRoute] int pollId, CancellationToken cancellation)
         {
             var result = await _questionService.GetAllAsync(pollId, cancellation); 
-            return result.IsSuccess ? Ok(result.value) : result.ToProblem(StatusCodes.Status404NotFound);
+            return result.IsSuccess ? Ok(result.value) : result.ToProblem();
         }
 
 
@@ -40,7 +40,7 @@ namespace surveyBasket.Api.Controllers
                 return CreatedAtAction(nameof(Get),new { pollId, result.value.Id},result.value);
             }
             return result.IsSuccess ? Ok(result) : 
-                result.ToProblem(StatusCodes.Status400BadRequest);
+                result.ToProblem();
 
         }
         [HttpPut("{id}/ToggleStatus")]
@@ -48,7 +48,7 @@ namespace surveyBasket.Api.Controllers
         {
             var result = await _questionService.ToggleStatuesAsync(pollId, id, cancellationToken);
        
-            return result.IsSuccess ? NoContent() : result.ToProblem(StatusCodes.Status404NotFound);
+            return result.IsSuccess ? NoContent() : result.ToProblem();
         }
 
         [HttpPut("{id}")]
@@ -59,8 +59,8 @@ namespace surveyBasket.Api.Controllers
                 return NoContent();
 
            return result.Error.Equals(QuestionErrors.DuplicatedQuestionContent) ?
-                result.ToProblem(StatusCodes.Status409Conflict) :
-                result.ToProblem(StatusCodes.Status404NotFound);
+                result.ToProblem() :
+                result.ToProblem();
 
         }
 

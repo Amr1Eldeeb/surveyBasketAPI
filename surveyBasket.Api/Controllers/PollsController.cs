@@ -17,7 +17,7 @@ namespace surveyBasket.Api.Controllers
         {
             var result = await _pollServices.GetAll(cancellationToken);
             
-            return  result.IsSuccess ? Ok(result.value) :result.ToProblem(StatusCodes.Status400BadRequest);
+            return  result.IsSuccess ? Ok(result.value) :result.ToProblem();
         
         }
         [HttpGet("current")]
@@ -25,7 +25,7 @@ namespace surveyBasket.Api.Controllers
         {
             var result = await _pollServices.GetCurrentAsync(cancellationToken);
 
-            return result.IsSuccess ? Ok(result.value) : result.ToProblem(StatusCodes.Status400BadRequest);
+            return result.IsSuccess ? Ok(result.value) : result.ToProblem();
             
         }
         [HttpGet("{id:int}")]
@@ -52,7 +52,7 @@ namespace surveyBasket.Api.Controllers
          
             
             return NewPoll.IsSuccess ?CreatedAtAction(nameof(GetById), new { id = NewPoll.value.Id }, NewPoll.value)   
-                :NewPoll.ToProblem(StatusCodes.Status409Conflict);
+                :NewPoll.ToProblem();
         }
 
 
@@ -63,7 +63,7 @@ namespace surveyBasket.Api.Controllers
         {
             var result = await _pollServices.Update(id, request, cancellationToken);
             return result.IsSuccess ? NoContent()
-                : result.ToProblem(StatusCodes.Status409Conflict);
+                : result.ToProblem();
 
         }
         [HttpDelete("{id}")]
@@ -75,7 +75,7 @@ namespace surveyBasket.Api.Controllers
             {
                 return NotFound();
             }
-            return IsDeleted.ToProblem(StatusCodes.Status400BadRequest);
+            return IsDeleted.ToProblem();
 
         }
         [HttpPut("{id}/togglePublished")]
@@ -85,7 +85,7 @@ namespace surveyBasket.Api.Controllers
             var flag = await _pollServices.TogglePublishedStatues(id, cancellationToken);
             if (flag.IsFailure)
             {
-                return flag.ToProblem(StatusCodes.Status400BadRequest);
+                return flag.ToProblem();
             }
             return NoContent();
         }

@@ -4,7 +4,7 @@ namespace surveyBasket.Api.Abstractions
 {
     public static  class ResultExtensions
     {
-        public static ObjectResult ToProblem(this Result result,int statusCode )
+        public static ObjectResult ToProblem(this Result result  )
         {
 
             if(result.IsSuccess)
@@ -14,13 +14,18 @@ namespace surveyBasket.Api.Abstractions
             }
 
 
-            var problem = Results.Problem(statusCode: statusCode);
+            var problem = Results.Problem(statusCode: result.Error.StatusCode);
             var problemdetalis = problem.GetType().GetProperty(nameof(ProblemDetails))!.GetValue(problem)  as ProblemDetails;
 
             problemdetalis!.Extensions = new Dictionary<string, object?>
             {
                 {
-                     "errors" , new object[]{result.Error}
+                     "errors" , new object[]
+                     {
+                         result.Error.Code,
+                         result.Error.ErrorDescription
+                     
+                     }
                 }
             };
 

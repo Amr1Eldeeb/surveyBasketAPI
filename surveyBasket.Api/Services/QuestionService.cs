@@ -45,7 +45,9 @@ namespace surveyBasket.Api.Services
 
 
            var pollIsExist = await _context.Polls.AnyAsync(x=>x.Id==pollId&&
-              x.IsPublished == true && x.StartAt <= DateOnly.FromDateTime(DateTime.UtcNow) && x.EndAt >= DateOnly.FromDateTime(DateTime.UtcNow), cancellationToken);
+              x.IsPublished == true && x.StartAt <= DateOnly.FromDateTime(DateTime.UtcNow)
+              
+              && x.EndAt >= DateOnly.FromDateTime(DateTime.UtcNow), cancellationToken);
 
             if(!pollIsExist)
                 return Result.Failure<IEnumerable<QuestionResponse>>(PollsErrors.PollNotFound);

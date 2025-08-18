@@ -1,13 +1,17 @@
 ﻿
 
+using surveyBasket.Api.Contracts.Votes;
+
 namespace surveyBasket.Api.Controllers
 {
     [Route("api/polls/{pollId}/Vote")]
     [ApiController]
     [Authorize]
-    public class VotesController(IQuestionService questionService) : ControllerBase
+    public class VotesController(IQuestionService questionService,IVoteServices voteServices) : ControllerBase
     {
         private readonly IQuestionService _questionService = questionService;
+
+        public IVoteServices _voteServices  = voteServices;
 
         [HttpGet("")]
         public async Task<IActionResult> Start([FromRoute]int pollId , CancellationToken cancellationToken)
@@ -19,13 +23,20 @@ namespace surveyBasket.Api.Controllers
 
             return result.Error.Equals(VoteErrors.DuplicatedVote)
                 ?
-                result.ToProblem(StatusCodes.Status409Conflict):
-                result.ToProblem(StatusCodes.Status404NotFound);
+                result.ToProblem():
+                result.ToProblem();
 
 
         }
-
-
+        [HttpPost("")]
+        public async Task<IActionResult> Vote([FromRoute]int pollId , [FromBody]voteRequest request ,CancellationToken cancellationToken )
+        {
+            var result  =await _voteServices.AddVoteAsync(pollId,User.GetUserId()!, request , cancellationToken);
+            if (result.IsSuccess)
+                return Created();
+            return result.ToProblem();
+        }
+        
 
 
     }

@@ -4,7 +4,7 @@ namespace surveyBasket.Api.Services
 {
     public interface  IVoteServices
     {
-        Task<Result> AddVoteAsync( int pollId,Vote vote ,voteRequest request , CancellationToken cancellationToken =default);
+        Task<Result> AddVoteAsync( int pollId,string userId ,voteRequest request , CancellationToken cancellationToken =default);
 
 
 
