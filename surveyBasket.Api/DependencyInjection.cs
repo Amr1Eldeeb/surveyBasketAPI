@@ -55,8 +55,12 @@ namespace surveyBasket.Api
                 <ApplicationDbContext>
                 (options => options.UseSqlServer(connencationString));
             //
-            services.AddScoped<IAuthService, AuthService>();//For Di injection
-             services.AddScoped<IVoteServices, VoteServices>();
+            services.AddScoped<IAuthService, AuthService>(); 
+
+            services.AddScoped<IVoteServices, VoteServices>();
+
+            services.AddScoped<IResultServices,ResultService>();
+
             services.AddExceptionHandler<GlobalExceptionHandler>();
             services.AddProblemDetails();
             return services;   
