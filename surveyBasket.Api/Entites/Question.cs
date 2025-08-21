@@ -9,7 +9,7 @@
         public bool IsActive { get; set; } = true;
         public Poll poll { get; set; } = default!;
         public ICollection<Answer> Answers { get; set; } = [];
-        public ICollection<VoteAnswer> Votes { get; set; } = []
+        public ICollection<VoteAnswer> Votes { get; set; } = [];
 
 
     }

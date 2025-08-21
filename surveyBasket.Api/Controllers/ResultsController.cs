@@ -28,7 +28,7 @@ namespace surveyBasket.Api.Controllers
 
 
         }
-        [HttpGet("Votes-per-answer")]
+        [HttpGet("Votes-per-question")]
         public async Task<IActionResult> VotesPerAnswer([FromRoute] int pollId, CancellationToken cancellationToken)
         {
             var result = await _services.GetVotesPerQuestionasync(pollId, cancellationToken);
