@@ -29,14 +29,16 @@ namespace surveyBasket.Api.Controllers
 
         }
         [HttpPost("")]
-        public async Task<IActionResult> Vote([FromRoute]int pollId , [FromBody]voteRequest request ,CancellationToken cancellationToken )
+        public async Task<IActionResult> Vote([FromRoute] int pollId, [FromBody] voteRequest request, CancellationToken cancellationToken)
         {
-            var result  =await _voteServices.AddVoteAsync(pollId,User.GetUserId()!, request , cancellationToken);
+            var result = await _voteServices.AddVoteAsync(pollId, User.GetUserId()!, request, cancellationToken);
             if (result.IsSuccess)
                 return Created();
             return result.ToProblem();
         }
-        
+
+
+
 
 
     }

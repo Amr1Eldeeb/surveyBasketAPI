@@ -24,22 +24,27 @@ namespace surveyBasket.Api.Services
 
             if (!pollIsExist)
                 return Result.Failure<IEnumerable<QuestionResponse>>(PollsErrors.PollNotFound);
+
             var avaliableQuestion = await _context.Questions.Where(x => x.pollId == pollId && x.IsActive)
                 .Select(x=>x.Id )
                 .ToListAsync(cancellationToken);
+
             if(!request.answer.Select(x=>x.questionId).SequenceEqual(avaliableQuestion))
             {
                 return Result.Failure<IEnumerable<QuestionResponse>>(VoteErrors.InvalidQuestion);
 
             }
+
             var Vote = new Vote
             {
                 PollId = pollId,
                 UserId = userId,
                 Answers = request.answer.Adapt<IEnumerable<VoteAnswer>>().ToList()
             };
-            await _context.Votes.AddAsync(Vote,cancellationToken);    
+            await _context.Votes.AddAsync(Vote,cancellationToken);   
+            
             await _context.SaveChangesAsync(cancellationToken);
+
             return Result.Success();
         }
     }

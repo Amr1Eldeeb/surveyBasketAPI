@@ -2,8 +2,8 @@
 {
     public record PollVotesResponse
         (
-        string Title,
-        IEnumerable<VoteResponse>votes
+        string Title,// of poll  
+        IEnumerable<VoteResponse>votes // list of Votes
         
         
         
