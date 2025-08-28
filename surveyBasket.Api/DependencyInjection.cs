@@ -60,6 +60,7 @@ namespace surveyBasket.Api
             services.AddScoped<IVoteServices, VoteServices>();
 
             services.AddScoped<IResultServices,ResultService>();
+            services.AddScoped<ICacheServices, CacheServices>();
 
             services.AddExceptionHandler<GlobalExceptionHandler>();
             services.AddProblemDetails();
