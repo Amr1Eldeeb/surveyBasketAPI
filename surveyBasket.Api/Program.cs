@@ -1,15 +1,20 @@
+﻿
 
 
 
 
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
-
-
-
 builder.Services.AddDependences(builder.Configuration);
+
+builder.Host.UseSerilog((context, configuration) =>
+configuration.ReadFrom.Configuration(context.Configuration) // دا عشان تروح بس علي فايل ال appSettings
+
+
+);
 
 var app = builder.Build(); 
 
@@ -24,6 +29,7 @@ if (app.Environment.IsDevelopment())
      Microsoft.OpenApi.OpenApiSpecVersion.OpenApi2_0);
 
 }
+app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 app.UseCors(); // middelware

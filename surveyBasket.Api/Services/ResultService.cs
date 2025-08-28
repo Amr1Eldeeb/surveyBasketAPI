@@ -71,7 +71,7 @@ namespace surveyBasket.Api.Services
              var votesperQuestion = await _context.VoteAnswers
                 .Where(x=>x.Vote.PollId ==pollId).
                 Select(x=> new VotesPerQuestionResponse(
-                  
+                   
                     x.Question.Content,
                     x.Question.Votes.GroupBy(x=>new {answersId= x.Answer.Id,answerContent = x.Answer.Content })
                     .Select(g=> new VotesPerAnswerResponse

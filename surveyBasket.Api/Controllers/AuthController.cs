@@ -6,16 +6,17 @@ namespace surveyBasket.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class AuthController(IAuthService authService, IOptions<JwtOptions> jwtoptions) : ControllerBase
+    public class AuthController(IAuthService authService, IOptions<JwtOptions> jwtoptions,ILogger<AuthController>_loggoer) : ControllerBase
     {
         private readonly IAuthService _authService = authService;
-
+        private readonly ILogger<AuthController> loggoer = _loggoer;
         private readonly JwtOptions _Jwtoptions = jwtoptions.Value;
     
         [HttpPost("")]
         public async Task<IActionResult>Login([FromBody]Login loginRequest, CancellationToken cancellationToken = default)
         {
-            //throw new Exception("non e");
+
+             loggoer.LogInformation("Logging with Email :{email} and password:{password}" ,loginRequest.Email , loginRequest.Password);
             var authResult = await _authService.getTokenasync(loginRequest.Email,
                 loginRequest.Password , cancellationToken);
 
