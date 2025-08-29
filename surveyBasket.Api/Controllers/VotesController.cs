@@ -16,7 +16,7 @@ namespace surveyBasket.Api.Controllers
 
         [HttpGet("")]
         //  [ResponseCache(Duration =60 )]  
-        [OutputCache(PolicyName ="polls")]
+     
         public async Task<IActionResult> Start([FromRoute]int pollId , CancellationToken cancellationToken)
         {
             //var userId  = User.GetUserId();

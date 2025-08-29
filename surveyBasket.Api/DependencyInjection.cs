@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using surveyBasket.Api.Authenciation;
@@ -17,6 +18,7 @@ namespace surveyBasket.Api
         public static IServiceCollection AddDependences(this IServiceCollection services ,
             IConfiguration configuration)
         {
+            services.AddHybridCache();
             // to read array of origins from appsettings as localhost.......
             // var AllowOrigins = configuration.GetSection("AllowOrigins").Get<string[]>();    
             //Put the AllowOrigins in the withOrigins
@@ -60,9 +62,10 @@ namespace surveyBasket.Api
             services.AddScoped<IVoteServices, VoteServices>();
 
             services.AddScoped<IResultServices,ResultService>();
-            services.AddScoped<ICacheServices, CacheServices>();
+            //services.AddScoped<ICacheServices, CacheServices>();
 
             services.AddExceptionHandler<GlobalExceptionHandler>();
+
             services.AddProblemDetails();
             return services;   
         }
