@@ -56,6 +56,27 @@ namespace surveyBasket.Api.Controllers
             }
 
         }
+        [HttpPost("register")]
+        public async Task<IActionResult>Register(RegisterRequest request ,CancellationToken cancellationToken)
+        {
+            var authResult = await _authService.RegisterAsync(request,cancellationToken);
+            return authResult.IsSuccess ? Ok(authResult.value) :authResult.ToProblem();
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     }
 }

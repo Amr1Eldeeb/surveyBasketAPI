@@ -14,6 +14,9 @@ namespace surveyBasket.Api.Errors
 
         public static readonly Error InvalidResfreshToken =
     new Error("User.InvalidResfreshToken", "Invalid Fresfresh Token  Token", StatusCodes.Status401Unauthorized);
-
+        public static readonly Error DuplicatedEmail =
+new Error("User.DuplicatedEmail", "Another user with the same email is already Exists", StatusCodes.Status409Conflict);
+        public static readonly Error EmailConfirmed =
+new Error("User.EmailConfirmed", " The Email is not Confirmed ", StatusCodes.Status409Conflict);
     }
 }

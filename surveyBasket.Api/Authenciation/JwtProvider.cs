@@ -23,7 +23,7 @@ namespace surveyBasket.Api.Authenciation
                 [
                 new (JwtRegisteredClaimNames.Sub , user.Id), // it carry the  id 
                 new (JwtRegisteredClaimNames.Email , user.Email!),
-                new (JwtRegisteredClaimNames.GivenName , user.Firstname),
+                new (JwtRegisteredClaimNames.GivenName , user.FirstName),
                 new (JwtRegisteredClaimNames.FamilyName , user.LastName),
                 new (JwtRegisteredClaimNames.Jti , Guid.NewGuid().ToString()) //random Guied
 

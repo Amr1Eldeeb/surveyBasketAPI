@@ -31,7 +31,7 @@ namespace surveyBasket.Api.Date
             {
                 Id = Guid.NewGuid().ToString(), // هنا بيتولد تلقائيًا
                 UserName = "admin",
-                Firstname = "Amr",
+                FirstName = "Amr",
                 LastName = "khaled",
                 NormalizedUserName = "ADMIN",
                 Email = "admin@example.com",

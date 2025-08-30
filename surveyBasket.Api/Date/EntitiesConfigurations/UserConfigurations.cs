@@ -7,7 +7,7 @@ namespace surveyBasket.Api.Date.EntitiesConfigurations
         // for validation  
         public void Configure(EntityTypeBuilder<ApplicationUser> builder) //دي ميثود بتبطفقها
         {
-            builder.Property(x => x.Firstname).HasMaxLength(100);
+            builder.Property(x => x.FirstName).HasMaxLength(100);
             builder.Property(x=>x.LastName).HasMaxLength(100);
             builder.OwnsMany(x => x.RefreshTokens)
                 .ToTable("RefreshTokens") //to change name of Table 

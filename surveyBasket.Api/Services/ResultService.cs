@@ -14,7 +14,7 @@ namespace surveyBasket.Api.Services
                     x.Title,
                     x.Votes.Select(v => new VoteResponse
                     (
-                        $"{v.User.Firstname} {v.User.LastName}",
+                        $"{v.User.FirstName} {v.User.LastName}",
                         v.SubmittedOn,
                         v.Answers.Select(x => new QuestionAnswerResponse(
 
