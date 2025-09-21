@@ -3,6 +3,9 @@
 
 
 
+using Hangfire;
+using Hangfire.Dashboard;
+using HangfireBasicAuthenticationFilter;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 
@@ -49,7 +52,24 @@ app.UseAuthorization();
 //    });
 //});
 //app.UseResponseCaching();
-
+app.UseHangfireDashboard("/jobs", new DashboardOptions
+{
+    Authorization =
+    [
+        new HangfireCustomBasicAuthenticationFilter{
+            User = app.Configuration
+            .GetValue<string>("HangfireSettings:UserName"),
+            Pass=app.Configuration
+            .GetValue<string>("HangfireSettings:Password")
+        }
+    ],
+    DashboardTitle = "ElDeeb DashBoard",
+    //IsReadOnlyFunc = (DashboardContext context) =>true// remove crud operteion for tasks
+});
+var scopefactory = app.Services.GetRequiredService<IServiceScopeFactory>();
+using var scope = scopefactory.CreateScope();
+var nitifactionServices = scope.ServiceProvider.GetRequiredService<INotificationsServices>();
+RecurringJob.AddOrUpdate("SendNewPollsnnotifiaction",() => nitifactionServices.SnedNewPollsNotifications(null),Cron.Daily);
 app.MapControllers();
 app.UseExceptionHandler();  
 //app.UseMiddleware<Execptionshandling>();

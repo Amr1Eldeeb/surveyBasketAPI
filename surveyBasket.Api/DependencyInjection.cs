@@ -1,5 +1,6 @@
 ﻿
 
+using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -72,7 +73,10 @@ namespace surveyBasket.Api
             services.AddProblemDetails();
             services.Configure<MailSettings>(configuration.GetSection(nameof(MailSettings)));
             services.AddScoped<IEmailSender, EmailServecies>();
+
             services.AddHttpContextAccessor();
+            services.AddBackgroundjobs(configuration);
+            services.AddScoped<INotificationsServices, NotificationServices>();
             return services;
         }
         public static IServiceCollection AddSwagger(this IServiceCollection services)
@@ -170,5 +174,23 @@ namespace surveyBasket.Api
 
             return services;
         }
+        public static IServiceCollection AddBackgroundjobs(this IServiceCollection services,
+        IConfiguration config)
+        {
+            services.AddHangfire(configuration => configuration
+                 .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+                 .UseSimpleAssemblyNameTypeSerializer()
+                 .UseRecommendedSerializerSettings()
+                 .UseSqlServerStorage(config.GetConnectionString("HangfireConnection")));
+
+            // Add the processing server as IHostedService
+            services.AddHangfireServer();
+
+
+
+            return services;
+
+        }
+
     }
 }

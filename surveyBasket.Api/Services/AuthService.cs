@@ -1,5 +1,6 @@
 ﻿
 
+using Hangfire;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.WebUtilities;
@@ -147,14 +148,6 @@ namespace surveyBasket.Api.Services
             if (EmailIsExists)
                 return Result.Failure(UserErrors.DuplicatedEmail);
 
-            //var user = new ApplicationUser
-            //{
-            //    Email = request.Email,
-            //    UserName = request.Email,
-            //    Firstname =request.FirstName,
-            //    LastName = request.LastName,
-
-            //}; هي هي adapt
             var user = request.Adapt<ApplicationUser>();
 
             var result = await UserManager.CreateAsync(user, request.Password);
@@ -172,11 +165,13 @@ namespace surveyBasket.Api.Services
                     new Dictionary<string, string>
                     {
                         {"{{name}}" ,user.FirstName},
-                        {"{{action_url}}",$"{origan}/auth/emailConfirmation?UserId={user.Id}&code={code}" }
+                        {"{{action_url}}",$"{origan}/auth/confirm-email?UserId={user.Id}&Code={code}" }
                     }
                     );
 
-                await _emailSender.SendEmailAsync(user.Email!,"SurveyBasket : EmailConfirmation ✅",emailBody);
+                BackgroundJob.Enqueue(() => _emailSender.SendEmailAsync(user.Email!, "SurveyBasket : EmailConfirmation ✅", emailBody));
+                //await _emailSender.SendEmailAsync(user.Email!,"SurveyBasket : EmailConfirmation ✅",emailBody);
+                await Task.CompletedTask;
                 return Result.Success();
 
             }
@@ -239,7 +234,7 @@ namespace surveyBasket.Api.Services
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code)); //add it in URl and encoding
 
             _logger.LogInformation("Confirmation Code : {code}", code);
-            // TODO sned Email
+             
             var origan = _httpContextAccessor.HttpContext?.Request.Headers.Origin;
             var emailBody = EmailBodyHelper.GenerateEmailBody("Emailconfirmation",
                 new Dictionary<string, string>
