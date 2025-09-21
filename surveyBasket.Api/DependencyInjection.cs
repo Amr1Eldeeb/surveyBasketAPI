@@ -2,20 +2,23 @@
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using surveyBasket.Api.Authenciation;
 using surveyBasket.Api.Date;
 using surveyBasket.Api.Date.Migrations;
+using surveyBasket.Api.Settings;
 using System.Text;
+
 
 namespace surveyBasket.Api
 {
     public static class DependencyInjection
     {
 
-        public static IServiceCollection AddDependences(this IServiceCollection services ,
+        public static IServiceCollection AddDependences(this IServiceCollection services,
             IConfiguration configuration)
         {
             services.AddHybridCache();
@@ -34,8 +37,8 @@ namespace surveyBasket.Api
 
 
             //    ));
-            services.AddCors(Options=>Options.
-            AddDefaultPolicy(builder=>builder.
+            services.AddCors(Options => Options.
+            AddDefaultPolicy(builder => builder.
             AllowAnyOrigin().
             AllowAnyHeader()
             .AllowAnyMethod()
@@ -57,17 +60,20 @@ namespace surveyBasket.Api
                 <ApplicationDbContext>
                 (options => options.UseSqlServer(connencationString));
             //
-            services.AddScoped<IAuthService, AuthService>(); 
+            services.AddScoped<IAuthService, AuthService>();
 
             services.AddScoped<IVoteServices, VoteServices>();
 
-            services.AddScoped<IResultServices,ResultService>();
+            services.AddScoped<IResultServices, ResultService>();
             //services.AddScoped<ICacheServices, CacheServices>();
 
             services.AddExceptionHandler<GlobalExceptionHandler>();
 
             services.AddProblemDetails();
-            return services;   
+            services.Configure<MailSettings>(configuration.GetSection(nameof(MailSettings)));
+            services.AddScoped<IEmailSender, EmailServecies>();
+            services.AddHttpContextAccessor();
+            return services;
         }
         public static IServiceCollection AddSwagger(this IServiceCollection services)
         {
@@ -82,7 +88,7 @@ namespace surveyBasket.Api
         public static IServiceCollection AddMapster(this IServiceCollection services)
         {
             //services.AddMapster();
-            var mappingconfig = TypeAdapterConfig.GlobalSettings; 
+            var mappingconfig = TypeAdapterConfig.GlobalSettings;
             mappingconfig.Scan(Assembly.GetExecutingAssembly());
 
             services.AddSingleton<IMapper>(new Mapper(mappingconfig));
@@ -115,7 +121,7 @@ namespace surveyBasket.Api
 
             services.AddIdentity<ApplicationUser, IdentityRole>().
 
-                   AddEntityFrameworkStores<ApplicationDbContext>();
+                   AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
             services.Configure<JwtOptions>(confg.GetSection(JwtOptions.SectionName));//for program to meean this y ares
 
@@ -148,7 +154,7 @@ namespace surveyBasket.Api
                     //ValidAudience = confg["Jwt:Audience"]
                 };
 
-                }
+            }
             );
             services.Configure<IdentityOptions>(options =>
             {
@@ -160,7 +166,7 @@ namespace surveyBasket.Api
 
 
 
-                
+
 
             return services;
         }
