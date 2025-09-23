@@ -73,7 +73,7 @@ namespace surveyBasket.Api
             services.AddProblemDetails();
             services.Configure<MailSettings>(configuration.GetSection(nameof(MailSettings)));
             services.AddScoped<IEmailSender, EmailServecies>();
-
+            services.AddScoped<IUserServices,UserServices>();   
             services.AddHttpContextAccessor();
             services.AddBackgroundjobs(configuration);
             services.AddScoped<INotificationsServices, NotificationServices>();

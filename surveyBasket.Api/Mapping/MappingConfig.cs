@@ -1,4 +1,5 @@
 ﻿using surveyBasket.Api.Contracts.Questions;
+using surveyBasket.Api.Contracts.Users;
 using System.Runtime.InteropServices;
 
 namespace surveyBasket.Api.Mapping
@@ -13,6 +14,11 @@ namespace surveyBasket.Api.Mapping
 
             config.NewConfig<RegisterRequest, ApplicationUser>()
             .Map(dest => dest.UserName, src => src.FirstName);
+
+            config.NewConfig<UserProfileResponse, ApplicationUser>()
+                        .Map(dest => dest.UserName, src => src.Email);
+
+
             // دي هي دي
             //config.NewConfig<QuestionRequest, Question>()
             //    .Map(dest => dest.Answers, src => src.Answers.Select(answer => new Answer { Content = answer }));

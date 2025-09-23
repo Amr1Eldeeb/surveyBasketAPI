@@ -1,6 +1,7 @@
 ﻿
 
-using Azure;
+
+using surveyBasket.Api.Authenciation;
 
 namespace surveyBasket.Api.Controllers
 {
@@ -79,7 +80,20 @@ namespace surveyBasket.Api.Controllers
 
         }
 
+        [HttpPost("forget-password")]
+        public async Task<IActionResult> ForgetPassword(ForgetPasswordRequest request, CancellationToken cancellationToken)
+        {
+            var authResult = await _authService.SendResetPasswordCodeAsync(request.Email);
+            return authResult.IsSuccess ? Ok() : authResult.ToProblem();
 
+        }
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(RsestPasswordRequest request, CancellationToken cancellationToken)
+        {
+            var authResult = await _authService.ResetPassswordAsync(request);
+            return authResult.IsSuccess ? Ok() : authResult.ToProblem();
+
+        }
 
 
 

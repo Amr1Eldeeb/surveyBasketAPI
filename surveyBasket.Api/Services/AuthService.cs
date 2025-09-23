@@ -250,6 +250,69 @@ namespace surveyBasket.Api.Services
 
 
         }
+        public async Task<Result> SendResetPasswordCodeAsync(string email)
+        {
+            if(await UserManager.FindByEmailAsync(email) is not { } user)
+                return Result.Success();
+            if(!user.EmailConfirmed)
+            {
+                return Result.Failure(UserErrors.EmailNotConfirmed);
+            }
+            var code = await UserManager.GeneratePasswordResetTokenAsync(user);
+
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code)); //add it in URl and encoding
+
+            _logger.LogInformation("Reset  Code : {code}", code);
+
+
+
+            await SendResetPasswrodEmail(user,email);
+            return Result.Success();
+
+
+        }
+        public async Task<Result>ResetPassswordAsync(RsestPasswordRequest request)
+        {
+            var user = await UserManager.FindByEmailAsync(request.Email);
+            if(user is null ||!user.EmailConfirmed )
+            {
+                return Result.Failure(UserErrors.InvalidCode);
+
+            }
+            IdentityResult result;
+            try
+            {
+                var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(request.code));
+
+                result =await UserManager.ResetPasswordAsync(user,code , request.NewPassword);
+            }
+            catch (FormatException)
+            {
+                result = IdentityResult.Failed(UserManager.ErrorDescriber.InvalidToken());
+            }
+            if(result.Succeeded)
+            {
+                return Result.Success();
+            }
+
+            var error = result.Errors.First();
+            return Result.Failure
+                (new Error(error.Code, error.Description, StatusCodes.Status401Unauthorized));
+        }
+        private async Task SendResetPasswrodEmail(ApplicationUser user ,string code)
+        {
+            var origan = _httpContextAccessor.HttpContext?.Request.Headers.Origin;
+            var emailBody = EmailBodyHelper.GenerateEmailBody("ForgetPassword",
+                new Dictionary<string, string>
+                {
+                        {"{{name}}" ,user.FirstName},
+                        {"{{action_url}}",$"{origan}/auth/forget-password?Email={user.Email}&code={code}" }
+                }
+                );
+
+            BackgroundJob.Enqueue(() => _emailSender.SendEmailAsync(user.Email!, "SurveyBasket : Change Password ✅", emailBody));
+            await Task.CompletedTask;
+        }
 
     }
 }
