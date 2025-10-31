@@ -1,7 +1,4 @@
-﻿
-
-
-using surveyBasket.Api.Authenciation;
+﻿using surveyBasket.Api.Authenciation;
 
 namespace surveyBasket.Api.Controllers
 {

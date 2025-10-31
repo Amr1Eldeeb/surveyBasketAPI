@@ -2,8 +2,8 @@
 namespace surveyBasket.Api.Controllers
 {
     [Route("api/[controller]")] // template 
-        [Authorize]
-    [ApiController]
+    [ApiController] 
+    [Authorize] 
     public class PollsController(IPollServices pollservices) : ControllerBase
     {
         private readonly IPollServices _pollServices = pollservices;

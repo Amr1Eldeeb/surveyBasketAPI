@@ -43,7 +43,7 @@ namespace surveyBasket.Api.Authenciation
                 issuer: _JwtOptions?.Issuer, // men ely 3mel this version of token                
                 audience: _JwtOptions?.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(_JwtOptions.ExpiryMinutes!),
+                expires: DateTime.UtcNow.AddMinutes(_JwtOptions!.ExpiryMinutes!),
                 signingCredentials: singingCredentials
 
 

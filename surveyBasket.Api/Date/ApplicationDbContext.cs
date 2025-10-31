@@ -3,14 +3,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Client;
-using surveyBasket.Api.Date.EntitiesConfigurations;
+using surveyBasket.Api.Date.EntitiesConfigurations; 
 using System;
 using System.Security.Claims;
 
 namespace surveyBasket.Api.Date
 {
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,IHttpContextAccessor httpContextAccessor)
-        : IdentityDbContext<ApplicationUser>(options) 
+        : IdentityDbContext<ApplicationUser,ApplicationRole,string>(options) 
     {
         private readonly IHttpContextAccessor HttpContextAccessor = httpContextAccessor;
 
@@ -26,23 +26,23 @@ namespace surveyBasket.Api.Date
           //  modelBuilder.ApplyConfiguration(new PollConfigurations());// For Each one entites
           modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-            var hasher = new PasswordHasher<ApplicationUser>();
-            var user = new ApplicationUser
-            {
-                Id = Guid.NewGuid().ToString(), // هنا بيتولد تلقائيًا
-                UserName = "admin",
-                FirstName = "Amr",
-                LastName = "khaled",
-                NormalizedUserName = "ADMIN",
-                Email = "admin@example.com",
-                NormalizedEmail = "ADMIN@EXAMPLE.COM",
-                EmailConfirmed = true,
-                SecurityStamp = Guid.NewGuid().ToString("D"),
-                ConcurrencyStamp = Guid.NewGuid().ToString("D"),
-            };
-            user.PasswordHash = hasher.HashPassword(user, "Admin@123");
+            //var hasher = new PasswordHasher<ApplicationUser>();
+            //var user = new ApplicationUser
+            //{
+            //    Id = Guid.NewGuid().ToString(), // هنا بيتولد تلقائيًا
+            //    UserName = "admin",
+            //    FirstName = "Amr",
+            //    LastName = "khaled",
+            //    NormalizedUserName = "ADMIN",
+            //    Email = "admin@example.com",
+            //    NormalizedEmail = "ADMIN@EXAMPLE.COM",
+            //    EmailConfirmed = true,
+            //    SecurityStamp = Guid.NewGuid().ToString("D"),
+            //    ConcurrencyStamp = Guid.NewGuid().ToString("D"),
+            //};
+            //user.PasswordHash = hasher.HashPassword(user, "Admin@123");
 
-            modelBuilder.Entity<ApplicationUser>().HasData(user);
+            //modelBuilder.Entity<ApplicationUser>().HasData(user);
             /**/
             var cascadeFKs = modelBuilder.Model
                 .GetEntityTypes()
@@ -57,6 +57,11 @@ namespace surveyBasket.Api.Date
 
             }
 
+            //        modelBuilder.Entity<Question>()
+            //.HasOne(q => q.CreatedBy)
+            //.WithMany()
+            //.HasForeignKey(q => q.CreatedById)
+            //.OnDelete(DeleteBehavior.Restrict);
 
 
 

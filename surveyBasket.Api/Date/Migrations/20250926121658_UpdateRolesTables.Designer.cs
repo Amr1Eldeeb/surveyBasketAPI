@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using surveyBasket.Api.Date;
 
@@ -11,9 +12,11 @@ using surveyBasket.Api.Date;
 namespace surveyBasket.Api.Date.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250926121658_UpdateRolesTables")]
+    partial class UpdateRolesTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -261,6 +264,26 @@ namespace surveyBasket.Api.Date.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "2a60d0c5-17cc-4a5a-bdd6-a2b303dda53a",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "38dfa186-8a84-416d-b54c-abcde043e7ca",
+                            Email = "admin@example.com",
+                            EmailConfirmed = true,
+                            FirstName = "Amr",
+                            LastName = "khaled",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@EXAMPLE.COM",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMSnGobm5a3j9PYAm0j2HswoDKXBgTsbdq72ztpfNylab0qx/K4nMfwvSjwLZFa2sA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "fd153d30-61be-4f03-afca-3b380c0e24da",
+                            TwoFactorEnabled = false,
+                            UserName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("surveyBasket.Api.Entites.Poll", b =>

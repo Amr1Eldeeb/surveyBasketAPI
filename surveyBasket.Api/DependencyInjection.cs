@@ -123,7 +123,7 @@ namespace surveyBasket.Api
         {
 
 
-            services.AddIdentity<ApplicationUser, IdentityRole>().
+            services.AddIdentity<ApplicationUser, ApplicationRole>().
 
                    AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
